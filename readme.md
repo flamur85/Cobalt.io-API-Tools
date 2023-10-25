@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Install Packages from venv_packages.txt and Run main.py</title>
-</head>
 <body>
     <h1>How to Install Packages from venv_packages.txt and Run main.py</h1>
     <h2>Installing Packages</h2>
