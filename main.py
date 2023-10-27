@@ -4,9 +4,11 @@ from decouple import Config
 config = Config('.env')
 AUTH_TOKEN = config.get('MY_TOKEN')
 ORG_TOKEN = config.get("ORG_TOKEN")
+
 STARTING_YEAR = '2023'
-PEN_TEST_DICTIONARY = {}
-EXCLUDED_PEN_TESTS = ['Goal Based Internal - Professional Services - May 2023']
+EXCLUDED_PEN_TESTS = ['Name of Cobalt Pen Test']
+
+pen_test_dictionary = {}
 
 headers = {
     'Accept': 'application/vnd.cobalt.v2+json',
@@ -29,19 +31,22 @@ def get_this_years_active_pen_tests():
         item_title = resource_data.get("title", "")
         item_id = resource_data.get("id", "")
         if item_title not in EXCLUDED_PEN_TESTS:
-            PEN_TEST_DICTIONARY[item_title] = item_id
+            pen_test_dictionary[item_title] = item_id
 
     # Print the dictionary of title:id pairs
     print('**********************************************************************')
     print('Current Pen Test in Non-Closed Status:')
-    for key, value in PEN_TEST_DICTIONARY.items():
+    for key, value in pen_test_dictionary.items():
         print(f"{key}: {value}")
 
-    print('\nTotal amount of open pen tests: %s' % len(PEN_TEST_DICTIONARY))
+    print('\nTotal amount of open pen tests: %s' % len(pen_test_dictionary))
 
 
 def print_report():
-    for pen_test_title, pen_test_id in PEN_TEST_DICTIONARY.items():
+    global_issues_reported = 0
+    global_issues_remaining = 0
+
+    for pen_test_title, pen_test_id in pen_test_dictionary.items():
         response = requests.get('https://api.cobalt.io/pentests/%s/report' % pen_test_id, headers=headers)
 
         if response.status_code == 200:
@@ -65,9 +70,11 @@ def print_report():
             info_len = len(json_data['resource']['findings']['severity']['informational'])
             print('Informational: %s' % info_len)
 
-            total_len = info_len+low_len+med_len+high_len+crit_len
-            print('Total: %s' % total_len)
+            total_reported_len = info_len+low_len+med_len+high_len+crit_len
+            print('Total: %s' % total_reported_len)
+            global_issues_reported = global_issues_reported + total_reported_len
 
+            # Remaining Issues
             print('\nTotal Remaining Issues')
             need_len = len(json_data['resource']['findings']['state']['need_fix'])
             print('Status - Need Fix: %s' % need_len)
@@ -78,8 +85,14 @@ def print_report():
             check_len = len(json_data['resource']['findings']['state']['check_fix'])
             print('Status - Check Fix: %s' % check_len)
 
-            total_state_len = need_len+wont_len+check_len
-            print('Total: %s' % total_state_len)
+            total_remaining_len = need_len+wont_len+check_len
+            print('Total: %s' % total_remaining_len)
+            global_issues_remaining = global_issues_remaining + total_remaining_len
+
+    print('\n**********************************************************************')
+    print('Total reported issues (across all pen tests): %s' % global_issues_reported)
+    print('Total remaining issues (across all pen tests): %s' % global_issues_remaining)
+    print('Percent of issues remediated: %s' % str(round(global_issues_remaining/global_issues_reported*100)) + '%')
 
 
 if __name__ == '__main__':
