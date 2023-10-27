@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Create Virtual Environment, Install Packages, and Run main.py</title>
-</head>
 <body>
     <h1>Create Virtual Environment, Install Packages, and Run main.py</h1>
     <h2>Creating a Virtual Environment</h2>
