@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Create Virtual Environment, Install Packages, and Run main.py</title>
+</head>
 <body>
-    <h1>How to Install Packages from venv_packages.txt and Run main.py</h1>
-    <h2>Installing Packages</h2>
+    <h1>Create Virtual Environment, Install Packages, and Run main.py</h1>
+    <h2>Creating a Virtual Environment</h2>
     <ol>
+        <li><strong>Create a New Virtual Environment:</strong>
+            <ul>
+                <li>On Windows:
+                    <code>python -m venv venv</code>
+                </li>
+                <li>On macOS and Linux:
+                    <code>python3 -m venv venv</code>
+                </li>
+            </ul>
+        </li>
         <li><strong>Activate Your Virtual Environment:</strong>
             <ul>
                 <li>On Windows:
@@ -14,7 +27,16 @@
                 </li>
             </ul>
         </li>
+    </ol>
+    <h2>Installing Packages</h2>
+    <ol>
         <li><strong>Navigate to the Directory Containing venv_packages.txt</strong></li>
+        <li><strong>Generate venv_packages.txt Using `pip freeze`:</strong>
+            <ul>
+                <li>Run: <code>pip freeze > venv_packages.txt</code></li>
+                <li>This command generates a list of installed packages and versions and saves it in the venv_packages.txt file.</li>
+            </ul>
+        </li>
         <li><strong>Install Packages from the venv_packages.txt File:</strong>
             <ul>
                 <li>Run: <code>pip install -r venv_packages.txt</code></li>
