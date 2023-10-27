@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <h1>Create Virtual Environment, Install Packages, and Run main.py</h1>
+    <h1>Setup and Run</h1>
     <h2>Creating a Virtual Environment</h2>
     <ol>
         <li><strong>Create a New Virtual Environment:</strong>
@@ -27,7 +27,6 @@
     </ol>
     <h2>Installing Packages</h2>
     <ol>
-        <li><strong>Navigate to the Directory Containing venv_packages.txt</strong></li>
         <li><strong>Generate venv_packages.txt Using `pip freeze`:</strong>
             <ul>
                 <li>Run: <code>pip freeze > venv_packages.txt</code></li>
