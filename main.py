@@ -1,12 +1,24 @@
+import sys
 import requests
 from decouple import Config
+from decouple import UndefinedValueError
 
-config = Config('.env')
-AUTH_TOKEN = config.get('MY_TOKEN')
-ORG_TOKEN = config.get("ORG_TOKEN")
+try:
+    config = Config('.env')
+    AUTH_TOKEN = config.get("MY_TOKEN")
+    if len(AUTH_TOKEN) == 0:
+        raise ValueError("Please update your .env file with your Cobalt Auth Token, if running this script locally.")
+    ORG_TOKEN = config.get("ORG_TOKEN")
+    if len(ORG_TOKEN) == 0:
+        raise ValueError("Please run get_org_token() to get the token and then update the .evn file.")
+except UndefinedValueError:
+    # Doing this for Jenkins
+    AUTH_TOKEN = sys.argv[1]
+    ORG_TOKEN = sys.argv[2]
+
 
 STARTING_YEAR = '2023'
-EXCLUDED_PEN_TESTS = ['Name of Cobalt Pen Test']
+EXCLUDED_PEN_TESTS = ['List of Cobalt Pen Tests to exclude']
 
 pen_test_dictionary = {}
 
@@ -92,7 +104,8 @@ def print_report():
     print('\n**********************************************************************')
     print('Total reported issues (across all pen tests): %s' % global_issues_reported)
     print('Total remaining issues (across all pen tests): %s' % global_issues_remaining)
-    print('Percent of issues remediated: %s' % str(round(global_issues_remaining/global_issues_reported*100)) + '%')
+    print('Percentage of remediated issues: %s' % str(100 - round(global_issues_remaining/global_issues_reported*100)) + '%')
+    print('\n**********************************************************************\n')
 
 
 if __name__ == '__main__':
