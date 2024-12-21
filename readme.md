@@ -48,8 +48,9 @@
     <ol>
         <li><strong>Edit the .env File:</strong>
             <ul>
-                <li>Open your .env file in a text editor.</li>
+                <li>Open your backup.env file in a text editor.</li>
                 <li>Add or update key-value pairs as needed.</li>
+                <li>Rename 'backup.env' to '.env'.</li>
             </ul>
         </li>
     </ol>
